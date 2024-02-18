@@ -12,7 +12,7 @@ export const flex = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  cneter: {
+  center: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

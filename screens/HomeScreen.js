@@ -31,9 +31,9 @@ const HomeScreen = () => {
             <View style={common.flex.rowCenter}>
               <TouchableOpacity
                 onPress={onPress}
-                style={[common.button.iconButton, common.flex.rowCenter]}
+                style={common.button.iconButton}
               >
-                <View>
+                <View style={common.flex.center}>
                   <SvgXml xml={svg.prev} />
                 </View>
               </TouchableOpacity>
@@ -42,9 +42,9 @@ const HomeScreen = () => {
               </View>
               <TouchableOpacity
                 onPress={onPress}
-                style={[common.button.iconButton, common.flex.rowCenter]}
+                style={common.button.iconButton}
               >
-                <View>
+                <View style={common.flex.center}>
                   <SvgXml xml={svg.next} />
                 </View>
               </TouchableOpacity>
@@ -52,13 +52,9 @@ const HomeScreen = () => {
 
             <TouchableOpacity
               onPress={onPress}
-              style={[
-                common.button.iconButton,
-                common.flex.rowCenter,
-                common.button.rightButton,
-              ]}
+              style={[common.button.iconButton, common.button.rightButton]}
             >
-              <View>
+              <View style={common.flex.center}>
                 <SvgXml xml={svg.turn} />
               </View>
             </TouchableOpacity>
