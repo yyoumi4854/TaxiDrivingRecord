@@ -17,7 +17,8 @@ export const common = StyleSheet.create({
 });
 
 export const section = StyleSheet.create({
-  position: "relative",
+  // position: "relative",
+  flex: 1,
 });
 export const yearContainer = StyleSheet.create({
   paddingVertical: 20,
@@ -44,6 +45,7 @@ export const monthCalendar = StyleSheet.create({
 });
 
 export const monthInfo = StyleSheet.create({
+  marginBottom: 20,
   paddingHorizontal: 16,
   paddingVertical: 20,
 });

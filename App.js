@@ -15,13 +15,15 @@ export default function App() {
 
   return (
     <NavigationContainer theme={{ colors: { background: "white" } }}>
-      <View
+      {/* 홈 화면 연간 영업 금액 보기 on/off에 따라 배경색상 변경 */}
+      {/* <View
         style={{
           paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
         }}
       >
         <StatusBar />
-      </View>
+      </View> */}
+      <StatusBar backgroundColor="blue" barStyle="light-content" />
       <Tab.Navigator
         initialRouteName="Home"
         screenOptions={{

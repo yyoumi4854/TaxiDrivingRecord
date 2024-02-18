@@ -12,6 +12,11 @@ export const flex = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  cneter: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export const text = StyleSheet.create({
@@ -71,4 +76,17 @@ export const box = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: "#fff",
   },
+});
+
+export const iconButton = StyleSheet.create({
+  container: {
+    position: "absolute",
+    bottom: 20,
+    right: 16,
+    width: 56,
+    height: 56,
+    borderRadius: 56,
+    backgroundColor: "#FFEFD2",
+  },
+  icon: {},
 });
