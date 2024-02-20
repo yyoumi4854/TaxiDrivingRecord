@@ -17,7 +17,6 @@ export const common = StyleSheet.create({
 });
 
 export const section = StyleSheet.create({
-  // position: "relative",
   flex: 1,
 });
 export const yearContainer = StyleSheet.create({

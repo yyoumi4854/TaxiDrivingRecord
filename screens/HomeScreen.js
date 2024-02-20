@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StatusBar } from "expo-status-bar";
+// import { StatusBar } from "expo-status-bar";
 import {
   SafeAreaView,
   ScrollView,

@@ -1,4 +1,5 @@
 // import { StatusBar } from "expo-status-bar";
+// import 'react-native-reanimated';
 import { StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -14,8 +15,16 @@ export default function App() {
       <StatusBar backgroundColor="blue" barStyle="light-content" />
 
       <Stack.Navigator>
-        <Stack.Screen name="main" component={BottomTabNavigator} />
-        <Stack.Screen name="Record" component={RecordScreen} />
+        <Stack.Screen
+          name="main"
+          component={BottomTabNavigator}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Record"
+          component={RecordScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

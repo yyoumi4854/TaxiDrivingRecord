@@ -48,8 +48,31 @@ export const button = StyleSheet.create({
     top: 8,
     right: 16,
   },
+
+  buttonsContainer: {
+    gap: 8,
+  },
+  button: {
+    flex: 1,
+    height: 42,
+    borderRadius: 10,
+  },
+  cancel: {
+    borderWidth: 1,
+    borderColor: "#FFA800",
+  },
+  confirm: {
+    backgroundColor: "#FFA800",
+  },
+  cancelText: {
+    color: "#FFA800",
+    fontSize: 14,
+  },
+  confirmText: {
+    color: "#FFF",
+    fontSize: 14,
+  },
 });
-// export const button = StyleSheet.create({});
 
 export const box = StyleSheet.create({
   grayBox: {
