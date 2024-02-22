@@ -1,5 +1,5 @@
+import { useEffect, useReducer } from "react";
 import {
-  Button,
   SafeAreaView,
   ScrollView,
   Text,
@@ -7,11 +7,19 @@ import {
   View,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import * as record from "../styles/record.styles";
-import * as common from "../styles/common.styles";
+import { useNavigation } from "@react-navigation/native";
 import { SvgXml } from "react-native-svg";
 import { svg } from "../assets/svg";
-import { useNavigation } from "@react-navigation/native";
+import * as calculate from "../utils/calculate";
+import * as record from "../styles/record.styles";
+import * as common from "../styles/common.styles";
+
+function reducer(state, action) {
+  return {
+    ...state,
+    [action.name]: parseInt(action.value),
+  };
+}
 
 const RecordScreen = () => {
   const navigation = useNavigation();
@@ -21,8 +29,72 @@ const RecordScreen = () => {
     navigation.goBack();
   };
 
+  const [state, dispatch] = useReducer(reducer, {
+    card: 0, // 카드
+    cash: 0, // 현금
+    lpgInjectionVolume: 0, // LPG 주입량
+    lpgUnitPrice: 0, // LPG 단가
+    mileage: 0, // 주행거리
+    businessDistance: 0, // 영업거리
+    toll: 0, // 통행료
+    operatingAmount: 0, // 영업금액
+    lpgChargeAmount: 0, // LPG 충전 금액
+    fuelEfficiency: 0, // 연비
+    lpgUsage: 0, // LPG 사용량
+  });
+
+  const {
+    card,
+    cash,
+    lpgInjectionVolume,
+    lpgUnitPrice,
+    mileage,
+    businessDistance,
+    toll,
+    operatingAmount,
+    lpgChargeAmount,
+    fuelEfficiency,
+    lpgUsage,
+  } = state;
+
+  const onChange = (name, value) => {
+    dispatch({ name, value });
+  };
+
+  const isNum = (text) => {
+    const number = parseInt(text);
+    return isNaN(number) ? 0 : number;
+  };
+
+  // 영업금액
+  useEffect(() => {
+    onChange("operatingAmount", calculate.operatingAmount(card, cash));
+  }, [card, cash]);
+
+  // LPG 충전 금액
+  useEffect(() => {
+    onChange(
+      "lpgChargeAmount",
+      calculate.operatingAmount(lpgInjectionVolume, lpgUnitPrice)
+    );
+  }, [lpgInjectionVolume, lpgUnitPrice]);
+
+  // 연비
+  useEffect(() => {
+    onChange(
+      "fuelEfficiency",
+      calculate.operatingAmount(mileage, lpgInjectionVolume)
+    );
+  }, [mileage, lpgInjectionVolume]);
+
+  // LPG 사용량
+  useEffect(() => {
+    onChange("lpgUsage", calculate.operatingAmount(mileage, fuelEfficiency));
+  }, [mileage, fuelEfficiency]);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      {/* 헤더 */}
       <View style={[common.flex.rowCenter, record.header.container]}>
         <View style={[common.flex.rowCenter, record.header.leftContainer]}>
           <TouchableOpacity onPress={goBack} style={[common.button.iconButton]}>
@@ -44,8 +116,9 @@ const RecordScreen = () => {
         </TouchableOpacity>
       </View>
 
+      {/* 운행정보 기록하기 */}
       <ScrollView style={[record.section]}>
-        {/* 운행정보 기록  */}
+        {/* 운행정보 기록 */}
         <View style={record.inputWrap.container}>
           <Text style={record.common.titleText}>기본 운행 정보 기록하기</Text>
 
@@ -59,6 +132,8 @@ const RecordScreen = () => {
                 <TextInput
                   placeholder="0"
                   keyboardType="numeric"
+                  value={card.toString()}
+                  onChangeText={(text) => onChange("card", isNum(text))}
                   style={record.inputWrap.textInput}
                 ></TextInput>
                 <Text style={record.inputWrap.unitText}>원</Text>
@@ -73,6 +148,8 @@ const RecordScreen = () => {
                 <TextInput
                   placeholder="0"
                   keyboardType="numeric"
+                  value={cash.toString()}
+                  onChangeText={(text) => onChange("cash", isNum(text))}
                   style={record.inputWrap.textInput}
                 ></TextInput>
                 <Text style={record.inputWrap.unitText}>원</Text>
@@ -90,6 +167,10 @@ const RecordScreen = () => {
                 <TextInput
                   placeholder="0"
                   keyboardType="numeric"
+                  value={lpgInjectionVolume}
+                  onChangeText={(text) =>
+                    onChange("lpgInjectionVolume", isNum(text))
+                  }
                   style={record.inputWrap.textInput}
                 ></TextInput>
                 <Text style={record.inputWrap.unitText}>L</Text>
@@ -104,6 +185,8 @@ const RecordScreen = () => {
                 <TextInput
                   placeholder="0"
                   keyboardType="numeric"
+                  value={lpgUnitPrice}
+                  onChangeText={(text) => onChange("lpgUnitPrice", isNum(text))}
                   style={record.inputWrap.textInput}
                 ></TextInput>
                 <Text style={record.inputWrap.unitText}>원</Text>
@@ -121,6 +204,8 @@ const RecordScreen = () => {
                 <TextInput
                   placeholder="0"
                   keyboardType="numeric"
+                  value={mileage}
+                  onChangeText={(text) => onChange("mileage", isNum(text))}
                   style={record.inputWrap.textInput}
                 ></TextInput>
                 <Text style={record.inputWrap.unitText}>km</Text>
@@ -135,6 +220,10 @@ const RecordScreen = () => {
                 <TextInput
                   placeholder="0"
                   keyboardType="numeric"
+                  value={businessDistance}
+                  onChangeText={(text) =>
+                    onChange("businessDistance", isNum(text))
+                  }
                   style={record.inputWrap.textInput}
                 ></TextInput>
                 <Text style={record.inputWrap.unitText}>km</Text>
@@ -152,6 +241,8 @@ const RecordScreen = () => {
                 <TextInput
                   placeholder="0"
                   keyboardType="numeric"
+                  value={toll}
+                  onChangeText={(text) => onChange("toll", isNum(text))}
                   style={record.inputWrap.textInput}
                 ></TextInput>
                 <Text style={record.inputWrap.unitText}>원</Text>
@@ -180,7 +271,7 @@ const RecordScreen = () => {
               >
                 <Text style={record.calculateWrap.title}>카드</Text>
                 <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>300,000원</Text>
+                  <Text style={common.text.blackBoldText}>{card}원</Text>
                 </View>
               </View>
 
@@ -194,7 +285,7 @@ const RecordScreen = () => {
               >
                 <Text style={record.calculateWrap.title}>현금</Text>
                 <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>300,000원</Text>
+                  <Text style={common.text.blackBoldText}>{cash}원</Text>
                 </View>
               </View>
 
@@ -215,7 +306,9 @@ const RecordScreen = () => {
                   영업금액
                 </Text>
                 <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>300,000원</Text>
+                  <Text style={common.text.blackBoldText}>
+                    {operatingAmount}원
+                  </Text>
                 </View>
               </View>
             </View>
@@ -233,7 +326,9 @@ const RecordScreen = () => {
               >
                 <Text style={record.calculateWrap.title}>LPG 주입량</Text>
                 <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>100L</Text>
+                  <Text style={common.text.blackBoldText}>
+                    {lpgInjectionVolume}L
+                  </Text>
                 </View>
               </View>
 
@@ -247,7 +342,9 @@ const RecordScreen = () => {
               >
                 <Text style={record.calculateWrap.title}>LPG 단가</Text>
                 <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>1,000원</Text>
+                  <Text style={common.text.blackBoldText}>
+                    {lpgUnitPrice}원
+                  </Text>
                 </View>
               </View>
 
@@ -268,7 +365,9 @@ const RecordScreen = () => {
                   LPG 충전 금액
                 </Text>
                 <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>300,000원</Text>
+                  <Text style={common.text.blackBoldText}>
+                    {lpgChargeAmount}원
+                  </Text>
                 </View>
               </View>
             </View>
@@ -286,7 +385,7 @@ const RecordScreen = () => {
               >
                 <Text style={record.calculateWrap.title}>주행거리</Text>
                 <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>100km</Text>
+                  <Text style={common.text.blackBoldText}>{mileage}km</Text>
                 </View>
               </View>
 
@@ -300,7 +399,9 @@ const RecordScreen = () => {
               >
                 <Text style={record.calculateWrap.title}>LPG 주입량</Text>
                 <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>100L</Text>
+                  <Text style={common.text.blackBoldText}>
+                    {lpgInjectionVolume}L
+                  </Text>
                 </View>
               </View>
 
@@ -321,7 +422,9 @@ const RecordScreen = () => {
                   연비
                 </Text>
                 <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>100km/L</Text>
+                  <Text style={common.text.blackBoldText}>
+                    {fuelEfficiency}km/L
+                  </Text>
                 </View>
               </View>
             </View>
@@ -339,7 +442,7 @@ const RecordScreen = () => {
               >
                 <Text style={record.calculateWrap.title}>주행거리</Text>
                 <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>100km</Text>
+                  <Text style={common.text.blackBoldText}>{mileage}km</Text>
                 </View>
               </View>
 
@@ -353,7 +456,9 @@ const RecordScreen = () => {
               >
                 <Text style={record.calculateWrap.title}>연비</Text>
                 <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>100L</Text>
+                  <Text style={common.text.blackBoldText}>
+                    {fuelEfficiency}L
+                  </Text>
                 </View>
               </View>
 
@@ -374,7 +479,7 @@ const RecordScreen = () => {
                   LPG 사용량
                 </Text>
                 <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>10L</Text>
+                  <Text style={common.text.blackBoldText}>{lpgUsage}L</Text>
                 </View>
               </View>
             </View>
