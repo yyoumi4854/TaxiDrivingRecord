@@ -1,10 +1,10 @@
 import { SafeAreaView, ScrollView } from "react-native";
-import Calendar from "../components/Calendar";
+import CalendarView from "../components/CalendarView";
 
 const CalendarScreen = () => {
   return (
     <SafeAreaView>
-      <Calendar />
+      <CalendarView />
       <ScrollView></ScrollView>
     </SafeAreaView>
   );

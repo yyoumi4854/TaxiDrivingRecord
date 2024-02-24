@@ -30,17 +30,17 @@ const RecordScreen = () => {
   };
 
   const [state, dispatch] = useReducer(reducer, {
-    card: 0, // 카드
-    cash: 0, // 현금
-    lpgInjectionVolume: 0, // LPG 주입량
-    lpgUnitPrice: 0, // LPG 단가
-    mileage: 0, // 주행거리
-    businessDistance: 0, // 영업거리
-    toll: 0, // 통행료
-    operatingAmount: 0, // 영업금액
-    lpgChargeAmount: 0, // LPG 충전 금액
-    fuelEfficiency: 0, // 연비
-    lpgUsage: 0, // LPG 사용량
+    card: "", // 카드
+    cash: "", // 현금
+    lpgInjectionVolume: "", // LPG 주입량
+    lpgUnitPrice: "", // LPG 단가
+    mileage: "", // 주행거리
+    businessDistance: "", // 영업거리
+    toll: "", // 통행료
+    operatingAmount: "", // 영업금액
+    lpgChargeAmount: "", // LPG 충전 금액
+    fuelEfficiency: "", // 연비
+    lpgUsage: "", // LPG 사용량
   });
 
   const {

@@ -1,5 +1,6 @@
 // 기록
 const record = {
+  date: "2024-02-22",
   card: 0, // 카드
   cash: 0, // 현금
   lpgInjectionVolume: 0, // LPG 주입량
