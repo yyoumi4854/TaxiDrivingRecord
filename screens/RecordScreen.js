@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -14,7 +14,8 @@ import * as calculate from "../utils/calculate";
 import * as record from "../styles/record.styles";
 import * as common from "../styles/common.styles";
 import RecordBox from "../components/RecordBox";
-import Button from "../components/Button";
+import BasicsButton from "../components/BasicsButton";
+import CalendarModal from "../components/modal/CalendarModal";
 
 function reducer(state, action) {
   return {
@@ -31,6 +32,7 @@ const RecordScreen = () => {
     navigation.goBack();
   };
 
+  const [modalVisible, setModalVisible] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
     card: "", // 카드
     cash: "", // 현금
@@ -104,7 +106,7 @@ const RecordScreen = () => {
         </View>
 
         <TouchableOpacity
-          //   onPress={onPress}
+          onPress={() => setModalVisible(true)}
           style={[common.button.iconButton]}
         >
           <View style={common.flex.center}>
@@ -112,6 +114,11 @@ const RecordScreen = () => {
           </View>
         </TouchableOpacity>
       </View>
+
+      <CalendarModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
 
       {/* 운행정보 기록하기 */}
       <ScrollView style={[record.section]}>
@@ -322,8 +329,8 @@ const RecordScreen = () => {
           common.button.buttonsContainer,
         ]}
       >
-        <Button text={"취소"} option={"cancel"} />
-        <Button text={"확인"} />
+        <BasicsButton text={"취소"} option={"cancel"} />
+        <BasicsButton text={"확인"} />
       </View>
     </SafeAreaView>
   );

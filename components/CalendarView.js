@@ -42,15 +42,15 @@ LocaleConfig.locales["ko"] = {
 };
 LocaleConfig.defaultLocale = "ko";
 
-const CalendarView = () => {
+const CalendarView = ({ selectedDate, setSelectedDate }) => {
   const markedDates = {
     "2024-02-16": { marked: true },
     "2024-02-17": { marked: true },
     "2024-02-18": { marked: true },
   };
 
-  const currentDate = dayjs().format("YYYY-MM-DD");
-  const [selectedDate, setSelectedDate] = useState(currentDate);
+  // const currentDate = dayjs().format("YYYY-MM-DD");
+  // const [selectedDate, setSelectedDate] = useState(currentDate);
 
   const markedSelectedDates = {
     ...markedDates,

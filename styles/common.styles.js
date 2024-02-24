@@ -92,7 +92,6 @@ export const box = StyleSheet.create({
     paddingHorizontal: 4,
     paddingVertical: 8,
   },
-  titleText: {},
   textWarp: {
     marginTop: 4,
     paddingVertical: 2,
@@ -111,5 +110,4 @@ export const iconButton = StyleSheet.create({
     borderRadius: 56,
     backgroundColor: "#FFEFD2",
   },
-  icon: {},
 });
