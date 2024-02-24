@@ -6,13 +6,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { SvgXml } from "react-native-svg";
 import { svg } from "../assets/svg";
+import RecordInputBox from "../components/RecordInputBox";
 import * as calculate from "../utils/calculate";
 import * as record from "../styles/record.styles";
 import * as common from "../styles/common.styles";
+import RecordBox from "../components/RecordBox";
+import Button from "../components/Button";
 
 function reducer(state, action) {
   return {
@@ -61,11 +63,6 @@ const RecordScreen = () => {
     dispatch({ name, value });
   };
 
-  const isNum = (text) => {
-    const number = parseInt(text);
-    return isNaN(number) ? 0 : number;
-  };
-
   // 영업금액
   useEffect(() => {
     onChange("operatingAmount", calculate.operatingAmount(card, cash));
@@ -75,7 +72,7 @@ const RecordScreen = () => {
   useEffect(() => {
     onChange(
       "lpgChargeAmount",
-      calculate.operatingAmount(lpgInjectionVolume, lpgUnitPrice)
+      calculate.lpgChargeAmount(lpgInjectionVolume, lpgUnitPrice)
     );
   }, [lpgInjectionVolume, lpgUnitPrice]);
 
@@ -83,13 +80,13 @@ const RecordScreen = () => {
   useEffect(() => {
     onChange(
       "fuelEfficiency",
-      calculate.operatingAmount(mileage, lpgInjectionVolume)
+      calculate.fuelEfficiency(mileage, lpgInjectionVolume)
     );
   }, [mileage, lpgInjectionVolume]);
 
   // LPG 사용량
   useEffect(() => {
-    onChange("lpgUsage", calculate.operatingAmount(mileage, fuelEfficiency));
+    onChange("lpgUsage", calculate.lpgUsage(mileage, fuelEfficiency));
   }, [mileage, fuelEfficiency]);
 
   return (
@@ -124,130 +121,64 @@ const RecordScreen = () => {
 
           {/* 카드, 현금 */}
           <View style={[common.flex.rowCenter, record.inputWrap.inputBoxWrap]}>
-            <View style={record.inputWrap.inputBox}>
-              <Text style={record.inputWrap.inputBoxTitle}>카드</Text>
-              <View
-                style={[common.flex.rowCenter, record.inputWrap.textInputWrap]}
-              >
-                <TextInput
-                  placeholder="0"
-                  keyboardType="numeric"
-                  value={card.toString()}
-                  onChangeText={(text) => onChange("card", isNum(text))}
-                  style={record.inputWrap.textInput}
-                ></TextInput>
-                <Text style={record.inputWrap.unitText}>원</Text>
-              </View>
-            </View>
-
-            <View style={record.inputWrap.inputBox}>
-              <Text style={record.inputWrap.inputBoxTitle}>현금</Text>
-              <View
-                style={[common.flex.rowCenter, record.inputWrap.textInputWrap]}
-              >
-                <TextInput
-                  placeholder="0"
-                  keyboardType="numeric"
-                  value={cash.toString()}
-                  onChangeText={(text) => onChange("cash", isNum(text))}
-                  style={record.inputWrap.textInput}
-                ></TextInput>
-                <Text style={record.inputWrap.unitText}>원</Text>
-              </View>
-            </View>
+            <RecordInputBox
+              title={"카드"}
+              state={card}
+              category={"card"}
+              onChange={onChange}
+            />
+            <RecordInputBox
+              title={"현금"}
+              state={cash}
+              category={"cash"}
+              onChange={onChange}
+            />
           </View>
 
           {/* LPG 주입량, LPG 단가 */}
           <View style={[common.flex.rowCenter, record.inputWrap.inputBoxWrap]}>
-            <View style={record.inputWrap.inputBox}>
-              <Text style={record.inputWrap.inputBoxTitle}>LPG 주입량</Text>
-              <View
-                style={[common.flex.rowCenter, record.inputWrap.textInputWrap]}
-              >
-                <TextInput
-                  placeholder="0"
-                  keyboardType="numeric"
-                  value={lpgInjectionVolume}
-                  onChangeText={(text) =>
-                    onChange("lpgInjectionVolume", isNum(text))
-                  }
-                  style={record.inputWrap.textInput}
-                ></TextInput>
-                <Text style={record.inputWrap.unitText}>L</Text>
-              </View>
-            </View>
+            <RecordInputBox
+              title={"LPG 주입량"}
+              state={lpgInjectionVolume}
+              category={"lpgInjectionVolume"}
+              unit={"L"}
+              onChange={onChange}
+            />
 
-            <View style={record.inputWrap.inputBox}>
-              <Text style={record.inputWrap.inputBoxTitle}>LPG 단가</Text>
-              <View
-                style={[common.flex.rowCenter, record.inputWrap.textInputWrap]}
-              >
-                <TextInput
-                  placeholder="0"
-                  keyboardType="numeric"
-                  value={lpgUnitPrice}
-                  onChangeText={(text) => onChange("lpgUnitPrice", isNum(text))}
-                  style={record.inputWrap.textInput}
-                ></TextInput>
-                <Text style={record.inputWrap.unitText}>원</Text>
-              </View>
-            </View>
+            <RecordInputBox
+              title={"LPG 단가"}
+              state={lpgUnitPrice}
+              category={"lpgUnitPrice"}
+              onChange={onChange}
+            />
           </View>
 
           {/* 주행거리, 영업거리 */}
           <View style={[common.flex.rowCenter, record.inputWrap.inputBoxWrap]}>
-            <View style={record.inputWrap.inputBox}>
-              <Text style={record.inputWrap.inputBoxTitle}>주행거리</Text>
-              <View
-                style={[common.flex.rowCenter, record.inputWrap.textInputWrap]}
-              >
-                <TextInput
-                  placeholder="0"
-                  keyboardType="numeric"
-                  value={mileage}
-                  onChangeText={(text) => onChange("mileage", isNum(text))}
-                  style={record.inputWrap.textInput}
-                ></TextInput>
-                <Text style={record.inputWrap.unitText}>km</Text>
-              </View>
-            </View>
-
-            <View style={record.inputWrap.inputBox}>
-              <Text style={record.inputWrap.inputBoxTitle}>영업거리</Text>
-              <View
-                style={[common.flex.rowCenter, record.inputWrap.textInputWrap]}
-              >
-                <TextInput
-                  placeholder="0"
-                  keyboardType="numeric"
-                  value={businessDistance}
-                  onChangeText={(text) =>
-                    onChange("businessDistance", isNum(text))
-                  }
-                  style={record.inputWrap.textInput}
-                ></TextInput>
-                <Text style={record.inputWrap.unitText}>km</Text>
-              </View>
-            </View>
+            <RecordInputBox
+              title={"주행거리"}
+              state={mileage}
+              category={"mileage"}
+              unit={"km"}
+              onChange={onChange}
+            />
+            <RecordInputBox
+              title={"영업거리"}
+              state={businessDistance}
+              category={"businessDistance"}
+              unit={"km"}
+              onChange={onChange}
+            />
           </View>
 
           {/* 통행료 */}
           <View style={[common.flex.rowCenter, record.inputWrap.inputBoxWrap]}>
-            <View style={record.inputWrap.inputBox}>
-              <Text style={record.inputWrap.inputBoxTitle}>통행료</Text>
-              <View
-                style={[common.flex.rowCenter, record.inputWrap.textInputWrap]}
-              >
-                <TextInput
-                  placeholder="0"
-                  keyboardType="numeric"
-                  value={toll}
-                  onChangeText={(text) => onChange("toll", isNum(text))}
-                  style={record.inputWrap.textInput}
-                ></TextInput>
-                <Text style={record.inputWrap.unitText}>원</Text>
-              </View>
-            </View>
+            <RecordInputBox
+              title={"통행료"}
+              state={toll}
+              category={"toll"}
+              onChange={onChange}
+            />
 
             <View style={{ flex: 1, padding: 8 }}></View>
           </View>
@@ -266,51 +197,25 @@ const RecordScreen = () => {
               ]}
             >
               {/* 카드 */}
-              <View
-                style={[common.box.grayBox, record.calculateWrap.calculateBox]}
-              >
-                <Text style={record.calculateWrap.title}>카드</Text>
-                <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>{card}원</Text>
-                </View>
-              </View>
+              <RecordBox title={"카드"} state={card} />
 
               <View style={record.calculateWrap.mathOperatorWrap}>
                 <SvgXml xml={svg.plus} width={10} fill="#333" />
               </View>
 
               {/* 현금 */}
-              <View
-                style={[common.box.grayBox, record.calculateWrap.calculateBox]}
-              >
-                <Text style={record.calculateWrap.title}>현금</Text>
-                <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>{cash}원</Text>
-                </View>
-              </View>
+              <RecordBox title={"현금"} state={cash} />
 
               <View style={record.calculateWrap.mathOperatorWrap}>
                 <SvgXml xml={svg.equals} />
               </View>
 
               {/* 영업금액 */}
-              <View
-                style={[
-                  common.box.orangeBox,
-                  record.calculateWrap.calculateBox,
-                ]}
-              >
-                <Text
-                  style={[record.calculateWrap.title, { color: "#FF7B00" }]}
-                >
-                  영업금액
-                </Text>
-                <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>
-                    {operatingAmount}원
-                  </Text>
-                </View>
-              </View>
+              <RecordBox
+                title={"영업금액"}
+                state={operatingAmount}
+                option={"orange"}
+              />
             </View>
 
             {/* LPG 충전 금액 계산 */}
@@ -321,55 +226,29 @@ const RecordScreen = () => {
               ]}
             >
               {/* LPG 주입량 */}
-              <View
-                style={[common.box.grayBox, record.calculateWrap.calculateBox]}
-              >
-                <Text style={record.calculateWrap.title}>LPG 주입량</Text>
-                <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>
-                    {lpgInjectionVolume}L
-                  </Text>
-                </View>
-              </View>
+              <RecordBox
+                title={"LPG 주입량"}
+                state={lpgInjectionVolume}
+                unit={"L"}
+              />
 
               <View style={record.calculateWrap.mathOperatorWrap}>
                 <SvgXml xml={svg.multiplication} />
               </View>
 
               {/* LPG 단가 */}
-              <View
-                style={[common.box.grayBox, record.calculateWrap.calculateBox]}
-              >
-                <Text style={record.calculateWrap.title}>LPG 단가</Text>
-                <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>
-                    {lpgUnitPrice}원
-                  </Text>
-                </View>
-              </View>
+              <RecordBox title={"LPG 단가"} state={lpgUnitPrice} />
 
               <View style={record.calculateWrap.mathOperatorWrap}>
                 <SvgXml xml={svg.equals} />
               </View>
 
               {/* LPG 충전 금액 */}
-              <View
-                style={[
-                  common.box.orangeBox,
-                  record.calculateWrap.calculateBox,
-                ]}
-              >
-                <Text
-                  style={[record.calculateWrap.title, { color: "#FF7B00" }]}
-                >
-                  LPG 충전 금액
-                </Text>
-                <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>
-                    {lpgChargeAmount}원
-                  </Text>
-                </View>
-              </View>
+              <RecordBox
+                title={"LPG 충전 금액"}
+                state={lpgChargeAmount}
+                option={"orange"}
+              />
             </View>
 
             {/* 연비 계산 */}
@@ -380,53 +259,26 @@ const RecordScreen = () => {
               ]}
             >
               {/* 주행거리 */}
-              <View
-                style={[common.box.grayBox, record.calculateWrap.calculateBox]}
-              >
-                <Text style={record.calculateWrap.title}>주행거리</Text>
-                <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>{mileage}km</Text>
-                </View>
-              </View>
+              <RecordBox title={"주행거리"} state={mileage} unit={"km"} />
 
               <View style={record.calculateWrap.mathOperatorWrap}>
                 <SvgXml xml={svg.division} />
               </View>
 
               {/* LPG 주입량 */}
-              <View
-                style={[common.box.grayBox, record.calculateWrap.calculateBox]}
-              >
-                <Text style={record.calculateWrap.title}>LPG 주입량</Text>
-                <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>
-                    {lpgInjectionVolume}L
-                  </Text>
-                </View>
-              </View>
+              <RecordBox title={"LPG 주입량"} state={mileage} unit={"L"} />
 
               <View style={record.calculateWrap.mathOperatorWrap}>
                 <SvgXml xml={svg.equals} />
               </View>
 
               {/* 연비 */}
-              <View
-                style={[
-                  common.box.orangeBox,
-                  record.calculateWrap.calculateBox,
-                ]}
-              >
-                <Text
-                  style={[record.calculateWrap.title, { color: "#FF7B00" }]}
-                >
-                  연비
-                </Text>
-                <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>
-                    {fuelEfficiency}km/L
-                  </Text>
-                </View>
-              </View>
+              <RecordBox
+                title={"연비"}
+                state={fuelEfficiency}
+                unit={"km/L"}
+                option={"orange"}
+              />
             </View>
 
             {/* LPG 사용량 계산 */}
@@ -437,51 +289,26 @@ const RecordScreen = () => {
               ]}
             >
               {/* 주행거리 */}
-              <View
-                style={[common.box.grayBox, record.calculateWrap.calculateBox]}
-              >
-                <Text style={record.calculateWrap.title}>주행거리</Text>
-                <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>{mileage}km</Text>
-                </View>
-              </View>
+              <RecordBox title={"주행거리"} state={mileage} unit={"km"} />
 
               <View style={record.calculateWrap.mathOperatorWrap}>
                 <SvgXml xml={svg.division} />
               </View>
 
               {/* 연비 */}
-              <View
-                style={[common.box.grayBox, record.calculateWrap.calculateBox]}
-              >
-                <Text style={record.calculateWrap.title}>연비</Text>
-                <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>
-                    {fuelEfficiency}L
-                  </Text>
-                </View>
-              </View>
+              <RecordBox title={"연비"} state={fuelEfficiency} unit={"km/L"} />
 
               <View style={record.calculateWrap.mathOperatorWrap}>
                 <SvgXml xml={svg.equals} />
               </View>
 
               {/* LPG 사용량 */}
-              <View
-                style={[
-                  common.box.orangeBox,
-                  record.calculateWrap.calculateBox,
-                ]}
-              >
-                <Text
-                  style={[record.calculateWrap.title, { color: "#FF7B00" }]}
-                >
-                  LPG 사용량
-                </Text>
-                <View style={record.calculateWrap.valueWrap}>
-                  <Text style={common.text.blackBoldText}>{lpgUsage}L</Text>
-                </View>
-              </View>
+              <RecordBox
+                title={"LPG 사용량"}
+                state={lpgUsage}
+                unit={"L"}
+                option={"orange"}
+              />
             </View>
           </View>
         </View>
@@ -495,24 +322,8 @@ const RecordScreen = () => {
           common.button.buttonsContainer,
         ]}
       >
-        <TouchableOpacity
-          style={[
-            common.flex.center,
-            common.button.button,
-            common.button.cancel,
-          ]}
-        >
-          <Text style={common.button.cancelText}>취소</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            common.flex.center,
-            common.button.button,
-            common.button.confirm,
-          ]}
-        >
-          <Text style={common.button.confirmText}>저장</Text>
-        </TouchableOpacity>
+        <Button text={"취소"} option={"cancel"} />
+        <Button text={"확인"} />
       </View>
     </SafeAreaView>
   );

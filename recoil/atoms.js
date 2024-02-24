@@ -16,9 +16,8 @@ const record = {
 
 /*
 data = {
-    2024.02.22 : record,
-    2024.02.21 : record,
-    2024.02.20 : record,
+    {record},
+    {record},
 }
  */
 
