@@ -16,6 +16,7 @@ import * as common from "../styles/common.styles";
 import RecordBox from "../components/RecordBox";
 import BasicsButton from "../components/BasicsButton";
 import CalendarModal from "../components/modal/CalendarModal";
+import dayjs from "dayjs";
 
 function reducer(state, action) {
   return {
@@ -24,8 +25,9 @@ function reducer(state, action) {
   };
 }
 
-const RecordScreen = () => {
+const RecordScreen = ({ route }) => {
   const navigation = useNavigation();
+  const { selectDate } = route.params;
 
   // 이전 페이지로 이동
   const goBack = () => {
@@ -34,6 +36,7 @@ const RecordScreen = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
+    date: selectDate,
     card: "", // 카드
     cash: "", // 현금
     lpgInjectionVolume: "", // LPG 주입량
@@ -48,6 +51,7 @@ const RecordScreen = () => {
   });
 
   const {
+    date,
     card,
     cash,
     lpgInjectionVolume,
@@ -102,7 +106,10 @@ const RecordScreen = () => {
             </View>
           </TouchableOpacity>
 
-          <Text style={record.header.dayText}>2024년 2월 20일</Text>
+          <Text style={record.header.dayText}>
+            {dayjs(date).year()}년 {dayjs(date).month() + 1}월{" "}
+            {dayjs(date).date()}일
+          </Text>
         </View>
 
         <TouchableOpacity

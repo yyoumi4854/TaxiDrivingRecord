@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
+import dayjs from "dayjs";
 import { svg } from "../assets/svg";
 import * as home from "../styles/home.styles";
 import * as common from "../styles/common.styles";
@@ -16,6 +17,8 @@ import IconButton from "../components/IconButton";
 const HomeScreen = () => {
   const [count, setCount] = useState(0);
   const onPress = () => setCount((prevCount) => prevCount + 1);
+  // 현재 날짜
+  const currentDate = dayjs().format("YYYY-MM-DD");
 
   return (
     <SafeAreaView style={home.section}>
@@ -147,7 +150,9 @@ const HomeScreen = () => {
           </View>
         </View>
       </ScrollView>
-      <IconButton />
+
+      {/* +버튼 */}
+      <IconButton currentDate={currentDate} />
     </SafeAreaView>
   );
 };
