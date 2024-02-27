@@ -1,7 +1,12 @@
+// react, react-native
 import { TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { SvgXml } from "react-native-svg";
+
+// assets, utils
 import { svg } from "../assets/svg";
+
+// style
 import * as common from "../styles/common.styles";
 
 // 추가버튼
@@ -10,7 +15,7 @@ const IconButton = ({ currentDate }) => {
   const navigation = useNavigation();
 
   const navigateToOtherComponent = () => {
-    navigation.navigate("Record", { selectDate: currentDate });
+    navigation.navigate("Record", { selectedDate: currentDate });
   };
 
   return (

@@ -1,3 +1,4 @@
+// react, react-native
 import { useState, useEffect, useReducer } from "react";
 import {
   SafeAreaView,
@@ -8,15 +9,23 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { SvgXml } from "react-native-svg";
+
+// library
+import dayjs from "dayjs";
+
+// assets, utils
 import { svg } from "../assets/svg";
-import RecordInputBox from "../components/RecordInputBox";
 import * as calculate from "../utils/calculate";
-import * as record from "../styles/record.styles";
-import * as common from "../styles/common.styles";
+
+// components
+import RecordInputBox from "../components/RecordInputBox";
 import RecordBox from "../components/RecordBox";
 import BasicsButton from "../components/BasicsButton";
 import CalendarModal from "../components/modal/CalendarModal";
-import dayjs from "dayjs";
+
+// style
+import * as record from "../styles/record.styles";
+import * as common from "../styles/common.styles";
 
 function reducer(state, action) {
   return {
@@ -25,9 +34,10 @@ function reducer(state, action) {
   };
 }
 
+// 추가하기, 수정하기 둘다 나오게?
 const RecordScreen = ({ route }) => {
   const navigation = useNavigation();
-  const { selectDate } = route.params;
+  const { selectedDate } = route.params;
 
   // 이전 페이지로 이동
   const goBack = () => {
@@ -35,8 +45,8 @@ const RecordScreen = ({ route }) => {
   };
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectDate, setSelectDate] = useState(selectedDate);
   const [state, dispatch] = useReducer(reducer, {
-    date: selectDate,
     card: "", // 카드
     cash: "", // 현금
     lpgInjectionVolume: "", // LPG 주입량
@@ -51,7 +61,6 @@ const RecordScreen = ({ route }) => {
   });
 
   const {
-    date,
     card,
     cash,
     lpgInjectionVolume,
@@ -95,6 +104,9 @@ const RecordScreen = ({ route }) => {
     onChange("lpgUsage", calculate.lpgUsage(mileage, fuelEfficiency));
   }, [mileage, fuelEfficiency]);
 
+  // 확인 클릭시 데이터저장, 달력페이지 방금 작성한 날짜로 이동?
+  const onConfirmPress = () => {};
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {/* 헤더 */}
@@ -107,8 +119,8 @@ const RecordScreen = ({ route }) => {
           </TouchableOpacity>
 
           <Text style={record.header.dayText}>
-            {dayjs(date).year()}년 {dayjs(date).month() + 1}월{" "}
-            {dayjs(date).date()}일
+            {dayjs(selectDate).year()}년 {dayjs(selectDate).month() + 1}월{" "}
+            {dayjs(selectDate).date()}일
           </Text>
         </View>
 
@@ -125,6 +137,8 @@ const RecordScreen = ({ route }) => {
       <CalendarModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        selectDate={selectDate}
+        setSelectDate={setSelectDate}
       />
 
       {/* 운행정보 기록하기 */}
@@ -336,8 +350,8 @@ const RecordScreen = ({ route }) => {
           common.button.buttonsContainer,
         ]}
       >
-        <BasicsButton text={"취소"} option={"cancel"} />
-        <BasicsButton text={"확인"} />
+        <BasicsButton text={"취소"} option={"cancel"} onButtonPress={goBack} />
+        <BasicsButton text={"확인"} onButtonPress={onConfirmPress} />
       </View>
     </SafeAreaView>
   );

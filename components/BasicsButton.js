@@ -1,7 +1,10 @@
+// react, react-native
 import { Text, TouchableOpacity } from "react-native";
+
+// style
 import * as common from "../styles/common.styles";
 
-const BasicsButton = ({ text, option = "confirm", setModalVisible = "" }) => {
+const BasicsButton = ({ text, option = "confirm", onButtonPress }) => {
   return (
     <TouchableOpacity
       style={[
@@ -9,7 +12,7 @@ const BasicsButton = ({ text, option = "confirm", setModalVisible = "" }) => {
         common.button.button,
         common.button[option === "confirm" ? "confirm" : "cancel"],
       ]}
-      onPress={() => (option === "confirm" ? "" : setModalVisible(false))}
+      onPress={onButtonPress}
     >
       <Text
         style={

@@ -1,10 +1,10 @@
-import { useState } from "react";
+// react, react-native
 import { View } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { SvgXml } from "react-native-svg";
-import dayjs from "dayjs";
+
+// assets, utils
 import { svg } from "../assets/svg";
-// import * as common from "../styles/common.styles";
 
 // 달력 한글 적용
 LocaleConfig.locales["ko"] = {
@@ -42,21 +42,18 @@ LocaleConfig.locales["ko"] = {
 };
 LocaleConfig.defaultLocale = "ko";
 
-const CalendarView = ({ selectedDate, setSelectedDate }) => {
+const CalendarView = ({ checkDate, setCheckDate }) => {
   const markedDates = {
     "2024-02-16": { marked: true },
     "2024-02-17": { marked: true },
     "2024-02-18": { marked: true },
   };
 
-  // const currentDate = dayjs().format("YYYY-MM-DD");
-  // const [selectedDate, setSelectedDate] = useState(currentDate);
-
   const markedSelectedDates = {
     ...markedDates,
-    [selectedDate]: {
+    [checkDate]: {
       selected: true,
-      marked: markedDates[selectedDate]?.marked,
+      marked: markedDates[checkDate]?.marked,
       dotColor: "#FF7B00",
       customStyles: {
         container: {
@@ -82,12 +79,8 @@ const CalendarView = ({ selectedDate, setSelectedDate }) => {
   };
 
   const onDayPress = (day) => {
-    setSelectedDate(day.dateString);
+    setCheckDate(day.dateString);
   };
-
-  // const handleGoBack = () => {
-  //   setSelectedDate(dayjs().format("YYYY-MM-DD"));
-  // };
 
   return (
     <View>
