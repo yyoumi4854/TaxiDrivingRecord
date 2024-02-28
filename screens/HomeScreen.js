@@ -1,3 +1,4 @@
+// react, react-native
 import { useState } from "react";
 // import { StatusBar } from "expo-status-bar";
 import {
@@ -8,17 +9,44 @@ import {
   View,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
+
+// library
 import dayjs from "dayjs";
+
+// assets, utils
 import { svg } from "../assets/svg";
+
+// components
+import IconButton from "../components/IconButton";
+import RecordBox from "../components/RecordBox";
+
+// style
 import * as home from "../styles/home.styles";
 import * as common from "../styles/common.styles";
-import IconButton from "../components/IconButton";
 
 const HomeScreen = () => {
-  const [count, setCount] = useState(0);
-  const onPress = () => setCount((prevCount) => prevCount + 1);
-  // 현재 날짜
+  // 현재 날짜 : 년-월-일
   const currentDate = dayjs().format("YYYY-MM-DD");
+  const [selectDate, setSelectDate] = useState(currentDate);
+
+  const date = dayjs(selectDate);
+  const year = date.year();
+  const month = date.month() + 1;
+
+  // 이전 달력으로 이동
+  const onPrevPress = () => {
+    const newDate = dayjs(selectDate).subtract(1, "month").format("YYYY-MM-DD");
+    setSelectDate(newDate);
+  };
+  // 다음 달력으로 이동
+  const onNextPress = () => {
+    const newDate = dayjs(selectDate).add(1, "month").format("YYYY-MM-DD");
+    setSelectDate(newDate);
+  };
+  // 현재 달로 이동
+  const onCurrentPress = () => {
+    setSelectDate(currentDate);
+  };
 
   return (
     <SafeAreaView style={home.section}>
@@ -33,19 +61,21 @@ const HomeScreen = () => {
           <View style={[home.monthCalendar.container, common.flex.rowCenter]}>
             <View style={common.flex.rowCenter}>
               <TouchableOpacity
-                onPress={onPress}
                 style={common.button.iconButton}
+                onPress={onPrevPress}
               >
                 <View style={common.flex.center}>
                   <SvgXml xml={svg.prev} />
                 </View>
               </TouchableOpacity>
               <View style={home.monthCalendar.textWrap}>
-                <Text style={home.monthCalendar.text}>2024년 2월</Text>
+                <Text style={home.monthCalendar.text}>
+                  {year}년 {month}월{/* {selectDate} */}
+                </Text>
               </View>
               <TouchableOpacity
-                onPress={onPress}
                 style={common.button.iconButton}
+                onPress={onNextPress}
               >
                 <View style={common.flex.center}>
                   <SvgXml xml={svg.next} />
@@ -54,8 +84,8 @@ const HomeScreen = () => {
             </View>
 
             <TouchableOpacity
-              onPress={onPress}
               style={[common.button.iconButton, common.button.rightButton]}
+              onPress={onCurrentPress}
             >
               <View style={common.flex.center}>
                 <SvgXml xml={svg.turn} />
@@ -91,60 +121,34 @@ const HomeScreen = () => {
             {/* 이번달 운행 정보 */}
             <View style={home.infoGrid.container}>
               <View style={[common.flex.rowCenter, common.box.smallBoxWrap]}>
-                <View style={[common.box.grayBox, common.box.smallBox]}>
-                  <Text style={common.text.blackText}>LPG 주입량</Text>
-                  <View style={common.box.textWarp}>
-                    <Text style={common.text.blackBoldText}>100L</Text>
-                  </View>
-                </View>
-                <View style={[common.box.grayBox, common.box.smallBox]}>
-                  <Text style={common.text.blackText}>LPG 단가</Text>
-                  <View style={common.box.textWarp}>
-                    <Text style={common.text.blackBoldText}>1000원</Text>
-                  </View>
-                </View>
-                <View style={[common.box.orangeBox, common.box.smallBox]}>
-                  <Text style={common.text.orangeText}>LPG 충전 금액</Text>
-                  <View style={common.box.textWarp}>
-                    <Text style={common.text.blackBoldText}>100000원</Text>
-                  </View>
-                </View>
+                <RecordBox title={"LPG 주입량"} state={"0"} unit={"L"} />
+                <RecordBox title={"LPG 단가"} state={"0"} />
+                <RecordBox
+                  title={"LPG 충전 금액"}
+                  state={"0"}
+                  option={"orange"}
+                />
               </View>
 
               <View style={[common.flex.rowCenter, common.box.smallBoxWrap]}>
-                <View style={[common.box.grayBox, common.box.smallBox]}>
-                  <Text style={common.text.blackText}>주행거리</Text>
-                  <View style={common.box.textWarp}>
-                    <Text style={common.text.blackBoldText}>1000km</Text>
-                  </View>
-                </View>
-                <View style={[common.box.grayBox, common.box.smallBox]}>
-                  <Text style={common.text.blackText}>영업거리</Text>
-                  <View style={common.box.textWarp}>
-                    <Text style={common.text.blackBoldText}>1000km</Text>
-                  </View>
-                </View>
-                <View style={[common.box.orangeBox, common.box.smallBox]}>
-                  <Text style={common.text.orangeText}>통행료</Text>
-                  <View style={common.box.textWarp}>
-                    <Text style={common.text.blackBoldText}>1000원</Text>
-                  </View>
-                </View>
+                <RecordBox title={"주행거리"} state={"0"} unit={"km"} />
+                <RecordBox title={"영업거리"} state={"0"} unit={"km"} />
+                <RecordBox title={"통행료"} state={"0"} />
               </View>
 
               <View style={[common.flex.rowCenter, common.box.smallBoxWrap]}>
-                <View style={[common.box.orangeBox, common.box.smallBox]}>
-                  <Text style={common.text.orangeText}>연비</Text>
-                  <View style={common.box.textWarp}>
-                    <Text style={common.text.blackBoldText}>100km/L</Text>
-                  </View>
-                </View>
-                <View style={[common.box.orangeBox, common.box.smallBox]}>
-                  <Text style={common.text.orangeText}>LPG 사용량</Text>
-                  <View style={common.box.textWarp}>
-                    <Text style={common.text.blackBoldText}>10L</Text>
-                  </View>
-                </View>
+                <RecordBox
+                  title={"연비"}
+                  state={"0"}
+                  unit={"km"}
+                  option={"orange"}
+                />
+                <RecordBox
+                  title={"LPG 사용량"}
+                  state={"0"}
+                  unit={"L"}
+                  option={"orange"}
+                />
               </View>
             </View>
           </View>

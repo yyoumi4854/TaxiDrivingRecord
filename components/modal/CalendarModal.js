@@ -22,7 +22,7 @@ const CalendarModal = ({
 }) => {
   const [checkDate, setCheckDate] = useState(selectDate);
 
-  const date = dayjs(selectDate).locale("ko");
+  const date = dayjs(checkDate).locale("ko");
   const year = date.year();
   const month = date.month() + 1;
   const day = date.date();

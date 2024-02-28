@@ -27,6 +27,8 @@ import CalendarModal from "../components/modal/CalendarModal";
 import * as record from "../styles/record.styles";
 import * as common from "../styles/common.styles";
 
+// import { createRecord } from "../realm/schema";
+
 function reducer(state, action) {
   return {
     ...state,
@@ -105,7 +107,12 @@ const RecordScreen = ({ route }) => {
   }, [mileage, fuelEfficiency]);
 
   // 확인 클릭시 데이터저장, 달력페이지 방금 작성한 날짜로 이동?
-  const onConfirmPress = () => {};
+  const onConfirmPress = () => {
+    // createRecord({
+    //   selectDate,
+    //   ...state,
+    // });
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
