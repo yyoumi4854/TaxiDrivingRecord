@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 // components
 import RecordBox from "../components/RecordBox";
 import BasicsButton from "../components/BasicsButton";
+import DeleteModal from "../components/modal/DeleteModal";
 
 // style
 import * as common from "../styles/common.styles";
@@ -17,6 +18,7 @@ import * as calendar from "../styles/calendar.styles";
 const CalendarScreen = () => {
   const currentDate = dayjs().format("YYYY-MM-DD");
   const [checkDate, setCheckDate] = useState(currentDate);
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -75,10 +77,20 @@ const CalendarScreen = () => {
             common.button.buttonsContainer,
           ]}
         >
-          <BasicsButton text={"삭제"} option={"cancel"} />
+          <BasicsButton
+            text={"삭제"}
+            option={"cancel"}
+            onButtonPress={() => setModalVisible(true)}
+          />
           <BasicsButton text={"수정"} />
         </View>
       </ScrollView>
+
+      <DeleteModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        checkDate={checkDate}
+      />
     </SafeAreaView>
   );
 };

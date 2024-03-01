@@ -15,6 +15,24 @@ export const common = StyleSheet.create({
   buttonsWrap: {
     marginTop: 20,
   },
+  titleText: {
+    fontSize: 16,
+    color: "#333",
+    textAlign: "center",
+  },
+  titleTextOrange: {
+    color: "#FFA800",
+  },
+  textWrap: {
+    marginTop: 16,
+    marginBottom: 32,
+  },
+  text: {
+    textAlign: "center",
+    color: "#333",
+    fontSize: 14,
+    lineHeight: 20,
+  },
 });
 
 export const calendar = StyleSheet.create({

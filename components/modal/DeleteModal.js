@@ -1,40 +1,24 @@
 // react, react-native
-import { useState } from "react";
-import { Modal, View, Text } from "react-native";
+import { Modal, View, Text, Button } from "react-native";
 
 // library
 import dayjs from "dayjs";
 
 // components
-import CalendarView from "../CalendarView";
 import BasicsButton from "../BasicsButton";
 
 // style
 import * as common from "../../styles/common.styles";
 import * as modal from "../../styles/modal.styles";
 
-const CalendarModal = ({
-  modalVisible,
-  setModalVisible,
-  selectDate,
-  setSelectDate,
-}) => {
-  const [checkDate, setCheckDate] = useState(selectDate);
-
-  const date = dayjs(checkDate).locale("ko");
-  const year = date.year();
-  const month = date.month() + 1;
-  const day = date.date();
-  const dayOfWeek = date.format("ddd");
-
+const DeleteModal = ({ modalVisible, setModalVisible, checkDate }) => {
   const onCancelPress = () => {
     setModalVisible(false);
-    setCheckDate(selectDate);
   };
 
   const onConfirmPress = () => {
     setModalVisible(false);
-    setSelectDate(checkDate);
+    // 데이터 삭제
   };
 
   return (
@@ -48,14 +32,19 @@ const CalendarModal = ({
     >
       <View style={modal.common.blackBackground}>
         <View style={modal.common.container}>
-          <View>
-            <Text style={modal.calendar.year}>{year}년</Text>
-            <Text style={modal.calendar.date}>
-              {month}월 {day}일 ({dayOfWeek})
+          <Text style={modal.common.titleText}>
+            운행정보 기록 <Text style={modal.common.titleTextOrange}>삭제</Text>
+            하기
+          </Text>
+
+          <View style={modal.common.textWrap}>
+            <Text style={modal.common.text}>
+              <Text style={common.text.orangeText}>
+                {dayjs(checkDate).format("YYYY년 M월 DD일")}
+              </Text>{" "}
+              운행정보기록을{"\n"}
+              삭제하시겠습니까?
             </Text>
-            <View style={modal.calendar.container}>
-              <CalendarView checkDate={checkDate} setCheckDate={setCheckDate} />
-            </View>
           </View>
 
           <View
@@ -70,7 +59,7 @@ const CalendarModal = ({
               option={"cancel"}
               onButtonPress={onCancelPress}
             />
-            <BasicsButton text={"변경"} onButtonPress={onConfirmPress} />
+            <BasicsButton text={"확인"} onButtonPress={onConfirmPress} />
           </View>
         </View>
       </View>
@@ -78,4 +67,4 @@ const CalendarModal = ({
   );
 };
 
-export default CalendarModal;
+export default DeleteModal;
