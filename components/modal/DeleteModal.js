@@ -39,7 +39,7 @@ const DeleteModal = ({ modalVisible, setModalVisible, checkDate }) => {
 
           <View style={modal.common.textWrap}>
             <Text style={modal.common.text}>
-              <Text style={common.text.orangeText}>
+              <Text style={modal.common.importantText}>
                 {dayjs(checkDate).format("YYYY년 M월 DD일")}
               </Text>{" "}
               운행정보기록을{"\n"}

@@ -33,6 +33,9 @@ export const common = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
+  importantText: {
+    color: "#FFA800",
+  },
 });
 
 export const calendar = StyleSheet.create({
